@@ -14,5 +14,4 @@ public class CompareProductsCommand implements Command{
             System.out.println(p.getName() + " " + p.getPrice());
         }
     }
-
 }

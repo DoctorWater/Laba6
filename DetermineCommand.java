@@ -1,7 +1,7 @@
 import java.io.IOException;
 import java.util.*;
 
-public class DetermineCommand implements Command{
+public class DetermineCommand implements Command, Returnable{
     private String c;
     private Hashtable<String, Product> products;
     private final String filename;
@@ -23,10 +23,12 @@ public class DetermineCommand implements Command{
         try {
             switch (c) {
                 case "help":
-                    HelpCommand.help();
+                    Command help = new HelpCommand();
+                    help.execute();
                     break;
                 case "info":
-                    InfoCommand.info(products, initializationDate);
+                    Command info = new InfoCommand(products, initializationDate);
+                    info.execute();
                     System.out.println("Команда выполнена!");
                     break;
                 case "show":
@@ -41,7 +43,8 @@ public class DetermineCommand implements Command{
                     System.exit(0);
                     break;
                 case "print_field_descending_price":
-                    PrintFieldDescendingPrice.print(products);
+                    Command printer = new PrintFieldDescendingPrice(products);
+                    printer.execute();
                     System.out.println("Команда выполнена!");
                     break;
                 case "history":
@@ -50,7 +53,8 @@ public class DetermineCommand implements Command{
                     System.out.println("Команда выполнена!");
                     break;
                 case "save":
-                    SaveToFile.save(filename, products);
+                    Command saver = new SaveToFileCommand(filename, products);
+                    saver.execute();
                     break;
                 default:
                     if (scanner.findInLine("^insert+\\s+\\w+") != null) {
@@ -111,7 +115,8 @@ public class DetermineCommand implements Command{
                                         c = scanner.findInLine("\\s+\\w+");
                                         scanner = new Scanner(c);
                                         c = scanner.findInLine("\\w+");
-                                        FilterGreaterUoM.print(products, c);
+                                        Command filter = new FilterGreaterUoMCommand(products, c);
+                                        filter.execute();
                                         System.out.println("Команда выполнена!");
                                     } else {
                                         if (scanner.findInLine("^remove_greater+\\s+") != null) {
@@ -119,7 +124,9 @@ public class DetermineCommand implements Command{
                                             c = scanner.findInLine("\\s+\\w+");
                                             scanner = new Scanner(c);
                                             c = scanner.findInLine("\\w+");
-                                            RemoveCompare.removeGreater(products, c);
+                                            RemoveGreaterCommand removeG = new RemoveGreaterCommand(products,c);
+                                            removeG.execute();
+                                            products=removeG.returnCommand();
                                             System.out.println("Команда выполнена!");
                                         } else {
                                             if (scanner.findInLine("^remove_lower+\\s+") != null) {
@@ -127,7 +134,9 @@ public class DetermineCommand implements Command{
                                                 c = scanner.findInLine("\\s+\\w+");
                                                 scanner = new Scanner(c);
                                                 c = scanner.findInLine("\\w+");
-                                                RemoveCompare.removeSmaller(products, c);
+                                                RemoveSmallerCommand removeS = new RemoveSmallerCommand(products,c);
+                                                removeS.execute();
+                                                products=removeS.returnCommand();
                                                 System.out.println("Команда выполнена!");
                                             } else {
                                                 if (scanner.findInLine("^count_greater_than_part_number+\\s+") != null) {
@@ -158,7 +167,7 @@ public class DetermineCommand implements Command{
                     break;
             }
 
-        } catch (NullPointerException e) {
+        } catch (NullPointerException | IllegalVarValue e) {
             System.out.println("Аргумент пуст!");
 
         }
