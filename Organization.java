@@ -1,7 +1,8 @@
+import java.io.Serializable;
 import java.util.Hashtable;
 import java.util.Random;
 
-public class Organization implements StructureInterface {
+public class Organization implements StructureInterface, Serializable {
     private Long id;
     private String name;
     private Float annualTurnover;

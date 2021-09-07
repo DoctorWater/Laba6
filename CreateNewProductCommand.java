@@ -1,8 +1,9 @@
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class CreateNewProductCommand implements Command{
+public class CreateNewProductCommand implements Command, Serializable {
     private final Hashtable<String, Product> table;
     private final String key;
     public CreateNewProductCommand(Hashtable<String, Product> theTable, String theKey){
@@ -113,11 +114,12 @@ public class CreateNewProductCommand implements Command{
             System.out.println("Нажато Ctrl+D, программа завершена!");
             System.exit(0);
         }
-        CreateNewOrganizationCommand creator = new CreateNewOrganizationCommand(table);
+        CreateNewOrganization creator = new CreateNewOrganization(table);
         creator.execute();
         Organization organization = creator.returnCommand();
         Product product = new Product(Product.checkId(table),name,coordinates,price,dateNow,partNumber,unit,organization,key);
         table.put(key,product);
+
     }
 
     public Hashtable<String,Product> returnCommand (){

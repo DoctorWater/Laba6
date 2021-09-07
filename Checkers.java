@@ -1,5 +1,6 @@
+import java.io.Serializable;
 import java.util.Hashtable;
-public class Checkers {
+public class Checkers implements Serializable {
     public static class CheckPartNumber {
         public static boolean check (Hashtable<String, Product> productHashtable, String partNumber){
             final int[] checker = {1};

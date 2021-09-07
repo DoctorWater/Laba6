@@ -1,8 +1,9 @@
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.Random;
 
-public class Product {
+public class Product implements Serializable {
 
     public Product(Long id, String name, Coordinates coordinates, Long price, Date creationDate, String partNumber, String unitOfMeasure, Organization manufacturer, String key) {
         this.id=id;

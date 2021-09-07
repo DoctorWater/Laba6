@@ -1,7 +1,8 @@
+import java.io.Serializable;
 import java.util.Hashtable;
 import java.util.Scanner;
 
-public class SearchId {
+public class SearchId implements Serializable {
     public static String search(Hashtable<String, Product> table, String ID){
         Scanner scanner = new Scanner(System.in);
 

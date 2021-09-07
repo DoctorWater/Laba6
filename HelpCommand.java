@@ -1,5 +1,9 @@
-public class HelpCommand {
-    public static void help(){
+import java.io.Serializable;
+import java.util.Hashtable;
+
+public class HelpCommand implements Command, Serializable {
+
+    public void execute(){
         System.out.println("help : вывести справку по доступным командам\n" +
                 "info : вывести в стандартный поток вывода информацию о коллекции (тип, дата инициализации, количество элементов и т.д.)\n" +
                 "show : вывести в стандартный поток вывода все элементы коллекции в строковом представлении\n" +
@@ -17,4 +21,5 @@ public class HelpCommand {
                 "filter_greater_than_unit_of_measure unitOfMeasure : вывести элементы, значение поля unitOfMeasure которых больше заданного\n" +
                 "print_field_descending_price : вывести значения поля price всех элементов в порядке убывания");
     }
+
 }

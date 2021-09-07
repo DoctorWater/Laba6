@@ -1,7 +1,14 @@
+import java.io.Serializable;
 import java.util.*;
 
-public class FilterGreaterUoM {
-    public static void print (Hashtable<String, Product> table, String UoM){
+public class FilterGreaterUoMCommand implements Command, Serializable {
+    private final Hashtable<String, Product> table;
+    private final String UoM;
+    public FilterGreaterUoMCommand(Hashtable<String, Product> theTable, String theUoM){
+        table=theTable;
+        UoM=theUoM;
+    }
+    public void execute(){
         try {
             if (!UoM.equals("SQUARE_METERS") && !UoM.equals("PCS") && !UoM.equals("LITERS") && !UoM.equals("MILLILITERS") && !UoM.equals("GRAMS"))
                 throw new IllegalArgumentException("Неверная величина!");
@@ -19,4 +26,5 @@ public class FilterGreaterUoM {
             System.out.println(e.getMessage());
         }
     }
+
 }

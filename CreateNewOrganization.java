@@ -4,10 +4,10 @@ import java.util.InputMismatchException;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
-public class CreateNewOrganizationCommand implements Command {
+public class CreateNewOrganization {
     private final Hashtable<String, Product> table;
     private final Organization organization = new Organization();
-    public CreateNewOrganizationCommand (Hashtable<String, Product> theTable){
+    public CreateNewOrganization(Hashtable<String, Product> theTable){
         table=theTable;
     }
     public void execute() throws IllegalArgumentException, InputMismatchException {

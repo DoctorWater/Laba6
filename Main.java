@@ -8,7 +8,7 @@ import java.util.*;
 public class Main {
 
     public static void main(String[] args){
-
+        //TODO: сделать вызов returnCommand() из execute()
         Scanner in = new Scanner(System.in);
             try {
                 Date initializationDate = new Date();
@@ -18,7 +18,9 @@ public class Main {
                 Path filenamePath= Paths.get(filename);
                 if(filenamePath.toRealPath().toString().length()>3 && filenamePath.toRealPath().toString().trim().startsWith("/dev"))
                     throw new InvalidPathException("","Строка не может быть преобразована в путь!");
-                Hashtable<String, Product> products = Parce.parse(filename, args);
+                ParseCommand parser = new ParseCommand(filename, args);
+                parser.execute();
+                Hashtable<String, Product> products = parser.returnCommand();
                 ArrayList<String> commands = new ArrayList<>();
                 while (true) {
                     System.out.println("ВВЕДИТЕ КОМАНДУ (ВВЕДИТЕ help ДЛЯ ПОЛУЧЕНИЯ СПИСКА ИСПОЛНЯЕМЫХ КОМАНД): ");

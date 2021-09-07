@@ -1,19 +1,23 @@
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
-public class Parce {
-    private static final ArrayList<String> s = new ArrayList<>();
-    private static final Hashtable<String, Product> hashtable = new Hashtable<>();
-    private static final Date date = new Date();
-    private static Scanner in = new Scanner(System.in);
-    public static Hashtable<String,Product> parse(String filename, String[] args) throws RecursionExeption, IllegalVarValue, IOException {
+
+public class ParseCommand implements Command, Serializable {
+    private final String[] args;
+    private String filename;
+    private final ArrayList<String> s = new ArrayList<>();
+    private final Hashtable<String, Product> hashtable = new Hashtable<>();
+    private final Date date = new Date();
+    private Scanner in = new Scanner(System.in);
+    public ParseCommand(String theFilename, String[] theArgs){
+        filename=theFilename;
+        args=theArgs;
+    }
+    public void execute() throws RecursionExeption, IllegalVarValue, IOException {
         s.clear();
         try {
             BufferedReader reader = new BufferedReader(new FileReader(filename));
@@ -23,7 +27,7 @@ public class Parce {
             }
 
             s.remove(0);
-            s.remove(s.size()-1);
+            s.remove(s.size() - 1);
             for (int j = 0; j < s.size(); j += 17) {
                 try {
                     Scanner scanner = new Scanner(s.get(j));
@@ -42,7 +46,7 @@ public class Parce {
                     String name = scanner.findInLine("\\:\\s*\\\"\\w*\\\"");
                     scanner = new Scanner(name);
                     name = scanner.findInLine("\\w+");
-                    if ((name.equals("")) | (name==null))
+                    if ((name.equals("")) | (name == null))
                         throw new IllegalVarValue("Данные невозможно считать (Имя неверно или null)");
 
                     scanner = new Scanner(s.get(j + 3));
@@ -55,7 +59,7 @@ public class Parce {
                     scanner = new Scanner(s.get(j + 4));
                     buffer = scanner.findInLine("\\d{1,}");
                     int y = Integer.parseInt(buffer);
-                    if (y>775)
+                    if (y > 775)
                         throw new IllegalVarValue("Y не должен быть больше 775");
 
                     scanner = new Scanner(s.get(j + 6));
@@ -70,7 +74,7 @@ public class Parce {
                     buffer = scanner.findInLine("\\d{1,}");
                     Long price = null;
                     if (buffer != null) {
-                        price=Long.parseLong(buffer);
+                        price = Long.parseLong(buffer);
                     }
 
                     scanner = new Scanner(s.get(j + 8));
@@ -94,7 +98,7 @@ public class Parce {
                     long organId = Long.parseLong(buffer);
 
                     scanner = new Scanner(s.get(j + 12));
-                    buffer=scanner.findInLine("\\w+");
+                    buffer = scanner.findInLine("\\w+");
                     if (buffer == null) {
                         throw new IllegalVarValue("Данные невозможно считать (NameOfOrganization == null!)");
                     }
@@ -102,10 +106,9 @@ public class Parce {
 
                     scanner = new Scanner(s.get(j + 13));
                     buffer = scanner.findInLine("\\d{1,}\\.\\d{1,}");
-                    if (buffer==null)
+                    if (buffer == null)
                         throw new NullPointerException("Данные невозможно считать (AnnualTurnover<=0 или нечитаем!)");
-                    else
-                    if (Float.parseFloat(buffer)<=0)
+                    else if (Float.parseFloat(buffer) <= 0)
                         throw new IllegalVarValue("Данные невозможно считать (AnnualTurnover<=0 или нечитаем!)");
                     float income = Float.parseFloat(buffer);
 
@@ -127,21 +130,23 @@ public class Parce {
                     coordinates.setY(y);
                     Product product = new Product(id, name, coordinates, price, date, partNumber, unitOfMeasure, organization, key);
                     hashtable.put(key, product);
-                }
-                catch (IllegalVarValue|NumberFormatException|NullPointerException e){
+                } catch (IllegalVarValue | NumberFormatException | NullPointerException e) {
                     System.out.println(e.getMessage());
                     System.out.println("Произошла ошибка! Чтение из файла невозможно!");
                     TimeUnit.SECONDS.sleep(5);
                     System.exit(0);
                 }
             }
-        } catch (OutOfMemoryError|FileNotFoundException e) {
+        } catch (OutOfMemoryError | FileNotFoundException e) {
             System.out.println("Неверный адрес файла!");
             System.exit(0);
         } catch (IOException | InterruptedException e) {
             System.out.println("Ошибка парсинга!");
             Main.main(args);
         }
+    }
+    public Hashtable<String,Product> returnCommand(){
         return hashtable;
     }
+
 }

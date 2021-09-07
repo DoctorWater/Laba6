@@ -1,4 +1,6 @@
-public enum OrganizationType {
+import java.io.Serializable;
+
+public enum OrganizationType implements Serializable {
     COMMERCIAL,
     PUBLIC,
     TRUST,

@@ -1,13 +1,16 @@
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.RandomAccessFile;
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Hashtable;
 
 
-public class SaveToFile {
-    public static void save(String filename, Hashtable<String,Product> table)
+public class SaveToFileCommand implements Command, Serializable {
+    private final String filename;
+    private final Hashtable<String,Product> table;
+    public SaveToFileCommand(String theFilename, Hashtable<String,Product> theTable){
+        filename=theFilename;
+        table=theTable;
+    }
+    public void execute()
     {
         SimpleDateFormat formatForDate = new SimpleDateFormat("dd-MM-yyyy");
         final int[] counter = {0};
@@ -54,5 +57,10 @@ public class SaveToFile {
         catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+
+    public Hashtable<String, Product> returnCommand() {
+        return null;
     }
 }

@@ -1,6 +1,7 @@
+import java.io.Serializable;
 import java.util.*;
 
-public class CompareProductsCommand implements Command{
+public class CompareProductsCommand implements Command, Serializable {
     private final Hashtable<String,Product> theTable;
     public CompareProductsCommand (Hashtable<String,Product> table){
         theTable=table;
@@ -14,5 +15,4 @@ public class CompareProductsCommand implements Command{
             System.out.println(p.getName() + " " + p.getPrice());
         }
     }
-
 }

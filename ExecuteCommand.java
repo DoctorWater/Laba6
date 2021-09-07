@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.Serializable;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -9,7 +10,7 @@ import java.util.Date;
 import java.util.Hashtable;
 import java.util.NoSuchElementException;
 
-public class ExecuteCommand implements Command{
+public class ExecuteCommand implements Command, Serializable {
     private static final ArrayList<String> s = new ArrayList<>();
     private final Hashtable<String, Product> table;
     private final String filename;
@@ -57,4 +58,5 @@ public class ExecuteCommand implements Command{
         System.out.println("Имя файла неверно!");
     }
     }
+
 }
