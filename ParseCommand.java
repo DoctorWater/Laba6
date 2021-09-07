@@ -7,12 +7,14 @@ import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 public class ParseCommand implements Command, Serializable {
+    @Serial
+    private static final long serialVersionUID = 12L;
     private final String[] args;
-    private String filename;
+    private final String filename;
     private final ArrayList<String> s = new ArrayList<>();
     private final Hashtable<String, Product> hashtable = new Hashtable<>();
     private final Date date = new Date();
-    private Scanner in = new Scanner(System.in);
+    private final Scanner in = new Scanner(System.in);
     public ParseCommand(String theFilename, String[] theArgs){
         filename=theFilename;
         args=theArgs;

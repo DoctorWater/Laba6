@@ -1,8 +1,11 @@
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Hashtable;
 
 public class HelpCommand implements Command, Serializable {
-    private Hashtable<String, Product> table;
+    @Serial
+    private static final long serialVersionUID = 9L;
+    private final Hashtable<String, Product> table;
     public HelpCommand(Hashtable<String, Product> table){
         this.table=table;
     }

@@ -1,11 +1,14 @@
+import java.io.Serial;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Hashtable;
 
 public class InfoCommand implements Command, Serializable {
-    private Hashtable<String, Product> table;
-    private Date initializationDate;
+    @Serial
+    private static final long serialVersionUID = 10L;
+    private final Hashtable<String, Product> table;
+    private final Date initializationDate;
     public InfoCommand(Hashtable<String, Product> theTable, Date theInitializationDate){
         table=theTable;
         initializationDate=theInitializationDate;

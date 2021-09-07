@@ -20,7 +20,7 @@ public class Main {
                     throw new InvalidPathException("","Строка не может быть преобразована в путь!");
                 ParseCommand parser = new ParseCommand(filename, args);
                 parser.execute();
-                Hashtable<String, Product> products = parser.returnCommand();
+                Hashtable<String, Product> products = parser.returnTable();
                 ArrayList<String> commands = new ArrayList<>();
                 while (true) {
                     System.out.println("ВВЕДИТЕ КОМАНДУ (ВВЕДИТЕ help ДЛЯ ПОЛУЧЕНИЯ СПИСКА ИСПОЛНЯЕМЫХ КОМАНД): ");
@@ -32,7 +32,7 @@ public class Main {
                     }
                     DetermineCommand determinator= new DetermineCommand(buffer, products, filename, commands, new ArrayList<>(), initializationDate);
                     determinator.execute();
-                    products = determinator.returnCommand();
+                    products = determinator.returnTable();
                 }
             } catch (IllegalVarValue | IOException | RecursionExeption e) {
                 System.out.println(e.getMessage());

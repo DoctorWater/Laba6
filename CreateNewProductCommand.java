@@ -1,9 +1,12 @@
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class CreateNewProductCommand implements Command, Serializable {
+    @Serial
+    private static final long serialVersionUID = 5L;
     private final Hashtable<String, Product> table;
     private final String key;
     public CreateNewProductCommand(Hashtable<String, Product> theTable, String theKey){

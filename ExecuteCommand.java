@@ -1,7 +1,4 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.Serializable;
+import java.io.*;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -11,6 +8,8 @@ import java.util.Hashtable;
 import java.util.NoSuchElementException;
 
 public class ExecuteCommand implements Command, Serializable {
+    @Serial
+    private static final long serialVersionUID = 7L;
     private static final ArrayList<String> s = new ArrayList<>();
     private final Hashtable<String, Product> table;
     private final String filename;

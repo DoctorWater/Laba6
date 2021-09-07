@@ -1,8 +1,11 @@
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Hashtable;
 import java.util.Random;
 
 public class Organization implements StructureInterface, Serializable {
+    @Serial
+    private static final long serialVersionUID = 4L;
     private Long id;
     private String name;
     private Float annualTurnover;

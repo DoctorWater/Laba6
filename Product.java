@@ -4,7 +4,7 @@ import java.util.Hashtable;
 import java.util.Random;
 
 public class Product implements Serializable {
-
+    private static final long serialVersionUID = 1L;
     public Product(Long id, String name, Coordinates coordinates, Long price, Date creationDate, String partNumber, String unitOfMeasure, Organization manufacturer, String key) {
         this.id=id;
         this.name=name;

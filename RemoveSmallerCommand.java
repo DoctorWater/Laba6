@@ -1,3 +1,4 @@
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -5,8 +6,10 @@ import java.util.Hashtable;
 import java.util.List;
 
 public class RemoveSmallerCommand implements Command, Serializable {
-    private Hashtable<String, Product> table;
-    private  String key;
+    @Serial
+    private static final long serialVersionUID = 18L;
+    private final Hashtable<String, Product> table;
+    private final String key;
     public RemoveSmallerCommand(Hashtable<String, Product> theTable, String theKey){
         table=theTable;
         key=theKey;

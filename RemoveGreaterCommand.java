@@ -1,9 +1,12 @@
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.*;
 
 public class RemoveGreaterCommand implements Command, Serializable {
-    private Hashtable<String, Product> table;
-    private  String key;
+    @Serial
+    private static final long serialVersionUID = 17L;
+    private final Hashtable<String, Product> table;
+    private final String key;
     public RemoveGreaterCommand(Hashtable<String, Product> theTable, String theKey){
         table=theTable;
         key=theKey;

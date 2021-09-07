@@ -1,7 +1,10 @@
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.*;
 
 public class FilterGreaterUoMCommand implements Command, Serializable {
+    @Serial
+    private static final long serialVersionUID = 8L;
     private final Hashtable<String, Product> table;
     private final String UoM;
     public FilterGreaterUoMCommand(Hashtable<String, Product> theTable, String theUoM){

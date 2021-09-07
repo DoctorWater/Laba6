@@ -4,6 +4,8 @@ import java.util.Hashtable;
 
 
 public class SaveToFileCommand implements Command, Serializable {
+    @Serial
+    private static final long serialVersionUID = 19L;
     private final String filename;
     private final Hashtable<String,Product> table;
     public SaveToFileCommand(String theFilename, Hashtable<String,Product> theTable){

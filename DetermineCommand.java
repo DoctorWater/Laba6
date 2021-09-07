@@ -1,8 +1,9 @@
-import java.io.IOException;
-import java.io.Serializable;
+import java.io.*;
 import java.util.*;
 
 public class DetermineCommand implements Command, Serializable {
+    @Serial
+    private static final long serialVersionUID = 6L;
     private String c;
     private Hashtable<String, Product> products;
     private final String filename;
@@ -10,7 +11,7 @@ public class DetermineCommand implements Command, Serializable {
     private final ArrayList<String> previousFilenames;
     private final Date initializationDate;
 
-    public DetermineCommand (String theC, Hashtable<String, Product> theProducts, String theFilename, ArrayList<String> theCommands, ArrayList<String> thePreviousFilenames, Date theInitializationDate){
+    public DetermineCommand (String theC, Hashtable<String, Product> theProducts, String theFilename, ArrayList<String> theCommands, ArrayList<String> thePreviousFilenames, Date theInitializationDate) throws IOException {
         c=theC;
         products=theProducts;
         filename=theFilename;
@@ -25,6 +26,7 @@ public class DetermineCommand implements Command, Serializable {
             switch (c) {
                 case "help":
                     Command help = new HelpCommand(products);
+
                     help.execute();
                     products = help.returnTable();
                     break;

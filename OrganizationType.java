@@ -1,3 +1,4 @@
+import java.io.Serial;
 import java.io.Serializable;
 
 public enum OrganizationType implements Serializable {
