@@ -14,4 +14,9 @@ public class PrintFieldDescendingPriceCommand implements Command, Serializable {
             System.out.println(p.getName() + " " + p.getPrice());
         }
     }
+
+    @Override
+    public Hashtable<String, Product> returnTable() {
+        return table;
+    }
 }

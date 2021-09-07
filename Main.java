@@ -8,7 +8,7 @@ import java.util.*;
 public class Main {
 
     public static void main(String[] args){
-        //TODO: сделать вызов returnCommand() из execute()
+        //TODO: сделать в Command return
         Scanner in = new Scanner(System.in);
             try {
                 Date initializationDate = new Date();

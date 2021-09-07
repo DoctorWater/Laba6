@@ -145,8 +145,9 @@ public class ParseCommand implements Command, Serializable {
             Main.main(args);
         }
     }
-    public Hashtable<String,Product> returnCommand(){
+
+    @Override
+    public Hashtable<String, Product> returnTable() {
         return hashtable;
     }
-
 }

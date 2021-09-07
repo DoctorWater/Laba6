@@ -2,7 +2,10 @@ import java.io.Serializable;
 import java.util.Hashtable;
 
 public class HelpCommand implements Command, Serializable {
-
+    private Hashtable<String, Product> table;
+    public HelpCommand(Hashtable<String, Product> table){
+        this.table=table;
+    }
     public void execute(){
         System.out.println("help : вывести справку по доступным командам\n" +
                 "info : вывести в стандартный поток вывода информацию о коллекции (тип, дата инициализации, количество элементов и т.д.)\n" +
@@ -20,6 +23,11 @@ public class HelpCommand implements Command, Serializable {
                 "count_greater_than_part_number partNumber : вывести количество элементов, значение поля partNumber которых больше заданного\n" +
                 "filter_greater_than_unit_of_measure unitOfMeasure : вывести элементы, значение поля unitOfMeasure которых больше заданного\n" +
                 "print_field_descending_price : вывести значения поля price всех элементов в порядке убывания");
+    }
+
+    @Override
+    public Hashtable<String, Product> returnTable() {
+        return table;
     }
 
 }

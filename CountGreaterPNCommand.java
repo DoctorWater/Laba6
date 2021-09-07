@@ -21,4 +21,9 @@ public class CountGreaterPNCommand implements Command, Serializable {
         }
         System.out.println("Количество элементов, значение поля partNumber которых больше заданного: " + counter);
     }
+
+    @Override
+    public Hashtable<String, Product> returnTable() {
+        return productHashtable;
+    }
 }

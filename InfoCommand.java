@@ -17,4 +17,9 @@ public class InfoCommand implements Command, Serializable {
         System.out.println("Тип коллекции: HashTable");
         System.out.println("");
     }
+
+    @Override
+    public Hashtable<String, Product> returnTable() {
+        return table;
+    }
 }

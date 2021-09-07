@@ -122,7 +122,8 @@ public class CreateNewProductCommand implements Command, Serializable {
 
     }
 
-    public Hashtable<String,Product> returnCommand (){
+    @Override
+    public Hashtable<String, Product> returnTable() {
         return table;
     }
 }

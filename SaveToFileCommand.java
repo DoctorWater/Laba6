@@ -60,7 +60,7 @@ public class SaveToFileCommand implements Command, Serializable {
     }
 
 
-    public Hashtable<String, Product> returnCommand() {
-        return null;
+    public Hashtable<String, Product> returnTable() {
+        return table;
     }
 }

@@ -27,4 +27,8 @@ public class FilterGreaterUoMCommand implements Command, Serializable {
         }
     }
 
+    @Override
+    public Hashtable<String, Product> returnTable() {
+        return table;
+    }
 }
