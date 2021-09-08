@@ -12,20 +12,19 @@ public class ExecuteCommand implements Command, Serializable {
     @Serial
     private static final long serialVersionUID = 7L;
     private static final ArrayList<String> s = new ArrayList<>();
-    private final Hashtable<String, Product> table;
+    private Hashtable<String, Product> table;
     private final String filename;
     private final ArrayList<String> commands;
     private final ArrayList<String> previousFilenames;
     private final Date initializationDate;
     private final String saveFilename;
 
-    public ExecuteCommand(String theFilename, ArrayList<String> thePreviousFilenames, Hashtable<String, Product> theTable, String theSaveFilename, ArrayList<String> theCommands, Date theInitializationDate){
+    public ExecuteCommand(String theFilename, ArrayList<String> thePreviousFilenames, String theSaveFilename, ArrayList<String> theCommands, Date theInitializationDate){
         filename=theFilename;
         previousFilenames=thePreviousFilenames;
         commands=theCommands;
         initializationDate=theInitializationDate;
         saveFilename=theSaveFilename;
-        table=theTable;
     }
     public void execute() throws IOException, RecursionExeption {
         try {
@@ -42,7 +41,8 @@ public class ExecuteCommand implements Command, Serializable {
         String line = "";
         while ((line = reader.readLine()) != null) {
             s.add(line);
-            DetermineCommand determination= new DetermineCommand(line,table,saveFilename, commands, previousFilenames, initializationDate);
+            DetermineCommand determination= new DetermineCommand(line,saveFilename, commands, previousFilenames, initializationDate);
+            determination.setProductHashtable(table);
             determination.execute();
         }
     } catch (RecursionExeption recursionExeption) {
@@ -62,6 +62,11 @@ public class ExecuteCommand implements Command, Serializable {
     @Override
     public Hashtable<String, Product> returnTable() {
         return table;
+    }
+
+    @Override
+    public void setProductHashtable(Hashtable<String, Product> productHashtable) {
+        this.table=productHashtable;
     }
 
 }

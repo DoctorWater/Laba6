@@ -6,10 +6,9 @@ import java.util.Hashtable;
 
 public class InfoCommand implements Command, Serializable {
     private static final long serialVersionUID = 10L;
-    private final Hashtable<String, Product> table;
+    private  Hashtable<String, Product> table;
     private final Date initializationDate;
-    public InfoCommand(Hashtable<String, Product> theTable, Date theInitializationDate){
-        table=theTable;
+    public InfoCommand(Date theInitializationDate){
         initializationDate=theInitializationDate;
     }
     public void execute(){
@@ -23,5 +22,10 @@ public class InfoCommand implements Command, Serializable {
     @Override
     public Hashtable<String, Product> returnTable() {
         return table;
+    }
+
+    @Override
+    public void setProductHashtable(Hashtable<String, Product> productHashtable) {
+        this.table=productHashtable;
     }
 }

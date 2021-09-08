@@ -13,7 +13,7 @@ public class ParseCommand implements Command, Serializable {
     private final String[] args;
     private final String filename;
     private final ArrayList<String> s = new ArrayList<>();
-    private final Hashtable<String, Product> hashtable = new Hashtable<>();
+    private Hashtable<String, Product> hashtable = new Hashtable<>();
     private final Date date = new Date();
     private final Scanner in = new Scanner(System.in);
     public ParseCommand(String theFilename, String[] theArgs){
@@ -152,5 +152,10 @@ public class ParseCommand implements Command, Serializable {
     @Override
     public Hashtable<String, Product> returnTable() {
         return hashtable;
+    }
+
+    @Override
+    public void setProductHashtable(Hashtable<String, Product> productHashtable) {
+
     }
 }

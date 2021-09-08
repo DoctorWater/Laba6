@@ -8,13 +8,16 @@ import java.util.List;
 public class CountGreaterPNCommand implements Command, Serializable {
     @Serial
     private static final long serialVersionUID = 3L;
-
-    private final Hashtable<String,Product> productHashtable;
+    private Hashtable<String,Product> productHashtable;
     private final int checker;
 
-    public CountGreaterPNCommand(Hashtable<String,Product> theTable, int theChecker){
-        productHashtable=theTable;
+    public CountGreaterPNCommand(int theChecker){
         checker=theChecker;
+    }
+
+    @Override
+    public void setProductHashtable(Hashtable<String,Product> productHashtable){
+        this.productHashtable=productHashtable;
     }
     public void execute (){
         int counter=0;

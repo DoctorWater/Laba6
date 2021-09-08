@@ -7,10 +7,9 @@ import java.util.*;
 public class CreateNewProductCommand implements Command, Serializable {
     @Serial
     private static final long serialVersionUID = 5L;
-    private final Hashtable<String, Product> table;
+    private Hashtable<String, Product> table;
     private final String key;
-    public CreateNewProductCommand(Hashtable<String, Product> theTable, String theKey){
-        table=theTable;
+    public CreateNewProductCommand(String theKey){
         key=theKey;
     }
 
@@ -122,11 +121,15 @@ public class CreateNewProductCommand implements Command, Serializable {
         Organization organization = creator.returnCommand();
         Product product = new Product(Product.checkId(table),name,coordinates,price,dateNow,partNumber,unit,organization,key);
         table.put(key,product);
-
     }
 
     @Override
     public Hashtable<String, Product> returnTable() {
         return table;
+    }
+
+    @Override
+    public void setProductHashtable(Hashtable<String, Product> productHashtable) {
+        this.table=productHashtable;
     }
 }

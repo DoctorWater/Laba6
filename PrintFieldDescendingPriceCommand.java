@@ -7,8 +7,8 @@ public class PrintFieldDescendingPriceCommand implements Command, Serializable {
     @Serial
     private static final long serialVersionUID = 14L;
     private Hashtable<String, Product> table;
-    public PrintFieldDescendingPriceCommand(Hashtable<String, Product> theTable){
-        table=theTable;
+    public PrintFieldDescendingPriceCommand(){
+
     }
     public void execute(){
         List<Product> tableValues= new ArrayList<>(table.values());
@@ -22,5 +22,10 @@ public class PrintFieldDescendingPriceCommand implements Command, Serializable {
     @Override
     public Hashtable<String, Product> returnTable() {
         return table;
+    }
+
+    @Override
+    public void setProductHashtable(Hashtable<String, Product> productHashtable) {
+        this.table=productHashtable;
     }
 }

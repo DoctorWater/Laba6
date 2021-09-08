@@ -9,10 +9,9 @@ import java.util.List;
 public class RemoveSmallerCommand implements Command, Serializable {
     @Serial
     private static final long serialVersionUID = 18L;
-    private final Hashtable<String, Product> table;
+    private Hashtable<String, Product> table;
     private final String key;
-    public RemoveSmallerCommand(Hashtable<String, Product> theTable, String theKey){
-        table=theTable;
+    public RemoveSmallerCommand(String theKey){
         key=theKey;
     }
     public void execute(){
@@ -27,5 +26,10 @@ public class RemoveSmallerCommand implements Command, Serializable {
     }
     public Hashtable<String, Product> returnTable(){
         return table;
+    }
+
+    @Override
+    public void setProductHashtable(Hashtable<String, Product> productHashtable) {
+        this.table=productHashtable;
     }
 }

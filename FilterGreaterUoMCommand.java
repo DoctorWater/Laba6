@@ -6,10 +6,9 @@ import java.util.*;
 public class FilterGreaterUoMCommand implements Command, Serializable {
     @Serial
     private static final long serialVersionUID = 8L;
-    private final Hashtable<String, Product> table;
+    private Hashtable<String, Product> table;
     private final String UoM;
-    public FilterGreaterUoMCommand(Hashtable<String, Product> theTable, String theUoM){
-        table=theTable;
+    public FilterGreaterUoMCommand(String theUoM){
         UoM=theUoM;
     }
     public void execute(){
@@ -34,5 +33,10 @@ public class FilterGreaterUoMCommand implements Command, Serializable {
     @Override
     public Hashtable<String, Product> returnTable() {
         return table;
+    }
+
+    @Override
+    public void setProductHashtable(Hashtable<String, Product> productHashtable) {
+        this.table=productHashtable;
     }
 }

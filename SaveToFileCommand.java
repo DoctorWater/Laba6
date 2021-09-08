@@ -8,10 +8,9 @@ public class SaveToFileCommand implements Command, Serializable {
     @Serial
     private static final long serialVersionUID = 19L;
     private final String filename;
-    private final Hashtable<String,Product> table;
-    public SaveToFileCommand(String theFilename, Hashtable<String,Product> theTable){
+    private Hashtable<String,Product> table;
+    public SaveToFileCommand(String theFilename){
         filename=theFilename;
-        table=theTable;
     }
     public void execute()
     {
@@ -65,5 +64,10 @@ public class SaveToFileCommand implements Command, Serializable {
 
     public Hashtable<String, Product> returnTable() {
         return table;
+    }
+
+    @Override
+    public void setProductHashtable(Hashtable<String, Product> productHashtable) {
+        this.table=productHashtable;
     }
 }

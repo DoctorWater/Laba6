@@ -6,9 +6,9 @@ import java.util.Hashtable;
 public class HelpCommand implements Command, Serializable {
     @Serial
     private static final long serialVersionUID = 9L;
-    private final Hashtable<String, Product> table;
-    public HelpCommand(Hashtable<String, Product> table){
-        this.table=table;
+    private Hashtable<String, Product> table;
+    public HelpCommand(){
+
     }
     public void execute(){
         System.out.println("help : вывести справку по доступным командам\n" +
@@ -32,6 +32,11 @@ public class HelpCommand implements Command, Serializable {
     @Override
     public Hashtable<String, Product> returnTable() {
         return table;
+    }
+
+    @Override
+    public void setProductHashtable(Hashtable<String, Product> productHashtable) {
+        this.table=productHashtable;
     }
 
 }

@@ -12,9 +12,8 @@ public class DetermineCommand implements Command, Serializable {
     private final ArrayList<String> previousFilenames;
     private final Date initializationDate;
 
-    public DetermineCommand (String theC, Hashtable<String, Product> theProducts, String theFilename, ArrayList<String> theCommands, ArrayList<String> thePreviousFilenames, Date theInitializationDate) throws IOException {
+    public DetermineCommand (String theC, String theFilename, ArrayList<String> theCommands, ArrayList<String> thePreviousFilenames, Date theInitializationDate) throws IOException {
         c=theC;
-        products=theProducts;
         filename=theFilename;
         commands=theCommands;
         previousFilenames=thePreviousFilenames;
@@ -26,13 +25,14 @@ public class DetermineCommand implements Command, Serializable {
         try {
             switch (c) {
                 case "help":
-                    Command help = new HelpCommand(products);
-
+                    Command help = new HelpCommand();
+                    help.setProductHashtable(products);
                     help.execute();
                     products = help.returnTable();
                     break;
                 case "info":
-                    Command info = new InfoCommand(products, initializationDate);
+                    Command info = new InfoCommand(initializationDate);
+                    info.setProductHashtable(products);
                     info.execute();
                     System.out.println("Команда выполнена!");
                     break;
@@ -41,24 +41,28 @@ public class DetermineCommand implements Command, Serializable {
                     System.out.println("Команда выполнена!");
                     break;
                 case "clear":
-                    products.clear();
+                    Command cleaner = new ClearCommand();
+                    cleaner.setProductHashtable(products);
+                    cleaner.execute();
+                    products = cleaner.returnTable();
                     System.out.println("Команда выполнена!");
                     break;
                 case "exit":
                     System.exit(0);
                     break;
                 case "print_field_descending_price":
-                    Command printer = new PrintFieldDescendingPriceCommand(products);
+                    Command printer = new PrintFieldDescendingPriceCommand();
+                    printer.setProductHashtable(products);
                     printer.execute();
                     System.out.println("Команда выполнена!");
                     break;
                 case "history":
-                    for (int i = 0; i < commands.size(); i++)
-                        System.out.println(commands.get(i));
+                    for (String command : commands) System.out.println(command);
                     System.out.println("Команда выполнена!");
                     break;
                 case "save":
-                    Command saver = new SaveToFileCommand(filename, products);
+                    Command saver = new SaveToFileCommand(filename);
+                    saver.setProductHashtable(products);
                     saver.execute();
                     break;
                 default:
@@ -69,7 +73,8 @@ public class DetermineCommand implements Command, Serializable {
                             scanner = new Scanner(c);
                             c = scanner.findInLine("\\w+");
 
-                            CreateNewProductCommand creatorIns = new CreateNewProductCommand(products, c);
+                            CreateNewProductCommand creatorIns = new CreateNewProductCommand(c);
+                            creatorIns.setProductHashtable(products);
                             creatorIns.execute();
                             products = creatorIns.returnTable();
                             System.out.println(products.toString());
@@ -98,7 +103,8 @@ public class DetermineCommand implements Command, Serializable {
                                     c = scanner.findInLine("\\w+");
                                     String key = SearchId.search(products, c);
                                     products.remove(key);
-                                    CreateNewProductCommand creatorUp = new CreateNewProductCommand(products, c);
+                                    CreateNewProductCommand creatorUp = new CreateNewProductCommand(c);
+                                    creatorUp.setProductHashtable(products);
                                     creatorUp.execute();
                                     products = creatorUp.returnTable();
                                     System.out.println("Команда выполнена!");
@@ -112,7 +118,8 @@ public class DetermineCommand implements Command, Serializable {
                                     c = scanner.findInLine("\\s+\\S+");
                                     scanner = new Scanner(c);
                                     c = scanner.findInLine("\\S+");
-                                    ExecuteCommand execution = new ExecuteCommand(c, previousFilenames, products, filename, commands, initializationDate);
+                                    ExecuteCommand execution = new ExecuteCommand(c, previousFilenames, filename, commands, initializationDate);
+                                    execution.setProductHashtable(products);
                                     execution.execute();
                                 } else {
                                     if (scanner.findInLine("^filter_greater_than_unit_of_measure+\\s+") != null) {
@@ -120,7 +127,8 @@ public class DetermineCommand implements Command, Serializable {
                                         c = scanner.findInLine("\\s+\\w+");
                                         scanner = new Scanner(c);
                                         c = scanner.findInLine("\\w+");
-                                        Command filter = new FilterGreaterUoMCommand(products, c);
+                                        Command filter = new FilterGreaterUoMCommand(c);
+                                        filter.setProductHashtable(products);
                                         filter.execute();
                                         System.out.println("Команда выполнена!");
                                     } else {
@@ -129,7 +137,8 @@ public class DetermineCommand implements Command, Serializable {
                                             c = scanner.findInLine("\\s+\\w+");
                                             scanner = new Scanner(c);
                                             c = scanner.findInLine("\\w+");
-                                            RemoveGreaterCommand removeG = new RemoveGreaterCommand(products,c);
+                                            RemoveGreaterCommand removeG = new RemoveGreaterCommand(c);
+                                            removeG.setProductHashtable(products);
                                             removeG.execute();
                                             products=removeG.returnTable();
                                             System.out.println("Команда выполнена!");
@@ -139,7 +148,8 @@ public class DetermineCommand implements Command, Serializable {
                                                 c = scanner.findInLine("\\s+\\w+");
                                                 scanner = new Scanner(c);
                                                 c = scanner.findInLine("\\w+");
-                                                RemoveSmallerCommand removeS = new RemoveSmallerCommand(products,c);
+                                                RemoveSmallerCommand removeS = new RemoveSmallerCommand(c);
+                                                removeS.setProductHashtable(products);
                                                 removeS.execute();
                                                 products=removeS.returnTable();
                                                 System.out.println("Команда выполнена!");
@@ -150,7 +160,8 @@ public class DetermineCommand implements Command, Serializable {
                                                     scanner = new Scanner(c);
                                                     c = scanner.findInLine("\\w+");
                                                     try {
-                                                        CountGreaterPNCommand counter = new CountGreaterPNCommand(products, Integer.parseInt(c));
+                                                        CountGreaterPNCommand counter = new CountGreaterPNCommand(Integer.parseInt(c));
+                                                        counter.setProductHashtable(products);
                                                         counter.execute();
                                                         System.out.println("Команда выполнена!");
                                                     } catch (NumberFormatException e) {
@@ -171,7 +182,6 @@ public class DetermineCommand implements Command, Serializable {
                     }
                     break;
             }
-
         } catch (NullPointerException | IllegalVarValue e) {
             System.out.println("Аргумент пуст!");
 
@@ -179,5 +189,10 @@ public class DetermineCommand implements Command, Serializable {
     }
     public Hashtable<String, Product> returnTable(){
         return products;
+    }
+
+    @Override
+    public void setProductHashtable(Hashtable<String, Product> productHashtable) {
+        this.products=productHashtable;
     }
 }
