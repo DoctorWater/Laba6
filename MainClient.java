@@ -1,4 +1,9 @@
+package mainClient.java;
 
+import common.DetermineCommand;
+import common.ParseCommand;
+import common.Product;
+import common.RecursionExeption;
 
 import java.io.IOException;
 import java.nio.file.InvalidPathException;
@@ -7,7 +12,7 @@ import java.nio.file.Paths;
 import java.util.*;
 
 
-public class Main {
+public class MainClient {
 
     public static void main(String[] args){
         //TODO: сделать в Command return

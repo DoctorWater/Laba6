@@ -1,4 +1,5 @@
- 
+package mainClient.java;
+
 import java.util.Hashtable;
 
 public interface StructureInterface {

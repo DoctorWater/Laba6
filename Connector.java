@@ -1,4 +1,5 @@
- 
+package mainClient.java;
+
 import java.io.IOException;
 import java.net.SocketAddress;
 import java.nio.channels.DatagramChannel;

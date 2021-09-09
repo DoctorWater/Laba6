@@ -1,4 +1,5 @@
- 
+package mainClient.java;
+
 import java.io.Serial;
 import java.io.Serializable;
 

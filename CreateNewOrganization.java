@@ -1,4 +1,7 @@
- 
+package mainClient.java;
+
+import common.Product;
+
 import java.util.Hashtable;
 import java.util.InputMismatchException;
 import java.util.NoSuchElementException;

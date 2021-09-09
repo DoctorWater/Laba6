@@ -1,4 +1,7 @@
- 
+package mainClient.java;
+
+import common.Product;
+
 import java.io.Serializable;
 import java.util.Hashtable;
 
