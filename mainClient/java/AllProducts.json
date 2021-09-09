@@ -1,0 +1,87 @@
+{
+"id": "4333255869834198147",
+"name": "fgre",
+"coordinates": [
+"3",
+"4"
+],
+"date": "20-04-2021",
+"price": "25345",
+"partNumber": "234234",
+"unitOfMeasure": "GRAMS",
+"manufacturer": [
+"7884841403356914188",
+"3323",
+"4234.0",
+"TRUST"
+],
+"key": "troya",
+"id": "2123791092497920558",
+"name": "fgre",
+"coordinates": [
+"2",
+"34"
+],
+"date": "20-04-2021",
+"price": "3342",
+"partNumber": "32",
+"unitOfMeasure": "PCS",
+"manufacturer": [
+"6167018322848137365",
+"ght",
+"4.0",
+"TRUST"
+],
+"key": "SomeString2",
+"id": "5649863886276038149",
+"name": "fger",
+"coordinates": [
+"3",
+"4"
+],
+"date": "20-04-2021",
+"price": "234",
+"partNumber": "2342",
+"unitOfMeasure": "MILLILITERS",
+"manufacturer": [
+"771687109016685016",
+"bfgdbrfg",
+"3423.0",
+"PUBLIC"
+],
+"key": "SameShit",
+"id": "3255061040914527247",
+"name": "name",
+"coordinates": [
+"322",
+"3"
+],
+"date": "27-04-2021",
+"price": "892",
+"partNumber": "8333",
+"unitOfMeasure": "GRAMS",
+"manufacturer": [
+"8341996250092447076",
+"nameOrg",
+"90.21",
+"TRUST"
+],
+"key": "Red",
+"id": "527106342760378370",
+"name": "name",
+"coordinates": [
+"32",
+"3"
+],
+"date": "27-04-2021",
+"price": "2",
+"partNumber": "2131",
+"unitOfMeasure": "GRAMS",
+"manufacturer": [
+"7876737538739122538",
+"r",
+"1.0",
+"TRUST"
+],
+"key": "3223"
+}
