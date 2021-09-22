@@ -17,8 +17,6 @@ public class ParseCommand implements Command, Serializable {
     private final String filename;
     private final ArrayList<String> s = new ArrayList<>();
     private Hashtable<String, Product> hashtable = new Hashtable<>();
-    private final Date date = new Date();
-    private final Scanner in = new Scanner(System.in);
     public ParseCommand(String theFilename, String[] theArgs){
         filename=theFilename;
         args=theArgs;

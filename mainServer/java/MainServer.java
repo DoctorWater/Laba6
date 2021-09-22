@@ -1,13 +1,13 @@
 package mainServer.java;
 
-import common.DetermineCommand;
-import common.ParseCommand;
-import common.Product;
-import common.RecursionExeption;
+import common.*;
 import mainClient.java.*;
 
 
 import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.SocketAddress;
+import java.nio.channels.DatagramChannel;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -15,9 +15,8 @@ import java.util.*;
 
 
 public class MainServer {
-    public static void main(String[] args){
-        /*TODO: сделать в Command return
-        Scanner in = new Scanner(System.in);
+    public static void main(String[] args) throws IOException, ClassNotFoundException, RecursionExeption, IllegalVarValue {
+        /*Scanner in = new Scanner(System.in);
             try {
                 Date initializationDate = new Date();
                 String buffer = args[0], bufferIfer;
@@ -56,6 +55,12 @@ public class MainServer {
             catch (InvalidPathException e){
                 System.out.println("Имя файла неверно!");
             }*/
+        InetSocketAddress address = new InetSocketAddress(1);
+        TransferServer server = new TransferServer(address);
+        Command command;
+        command = server.receive();
+        command.execute();
+        System.out.println("Получено");
     }
 
 }

@@ -7,7 +7,7 @@ import java.util.Hashtable;
 
 public class InfoCommand implements Command, Serializable {
     private static final long serialVersionUID = 10L;
-    private  Hashtable<String, Product> table;
+    private  Hashtable<String, Product> table = new Hashtable<String, Product>();
     private final Date initializationDate;
     public InfoCommand(Date theInitializationDate){
         initializationDate=theInitializationDate;
