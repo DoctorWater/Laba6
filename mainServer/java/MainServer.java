@@ -19,9 +19,9 @@ public class MainServer {
         /*Scanner in = new Scanner(System.in);
             try {
                 Date initializationDate = new Date();
-                String buffer = args[0], bufferIfer;
+                String bufferIfer;
                 Scanner scanner = new Scanner(buffer);
-                String filename = buffer;
+                String filename = "AllProducts.json";
                 Path filenamePath= Paths.get(filename);
                 if(filenamePath.toRealPath().toString().length()>3 && filenamePath.toRealPath().toString().trim().startsWith("/dev"))
                     throw new InvalidPathException("","Строка не может быть преобразована в путь!");
@@ -57,10 +57,8 @@ public class MainServer {
             }*/
         InetSocketAddress address = new InetSocketAddress(1);
         TransferServer server = new TransferServer(address);
-        Command command;
-        command = server.receive();
-        command.execute();
-        System.out.println("Получено");
+        InfoCommand info = new InfoCommand(new Date());
+        server.send(info);
     }
 
 }

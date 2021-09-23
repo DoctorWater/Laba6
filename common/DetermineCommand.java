@@ -2,6 +2,7 @@ package common;
 
 import mainClient.java.IllegalVarValue;
 import mainClient.java.SearchId;
+import mainClient.java.TransferClient;
 
 import java.io.*;
 import java.util.*;
@@ -15,7 +16,7 @@ public class DetermineCommand implements Command, Serializable {
     private final ArrayList<String> commands;
     private final ArrayList<String> previousFilenames;
     private final Date initializationDate;
-
+    private TransferClient transferClient;
     public DetermineCommand (String theC, String theFilename, ArrayList<String> theCommands, ArrayList<String> thePreviousFilenames, Date theInitializationDate) throws IOException {
         c=theC;
         filename=theFilename;
@@ -25,7 +26,6 @@ public class DetermineCommand implements Command, Serializable {
     }
     public void execute() throws IOException, RecursionExeption {
         Scanner scanner = new Scanner(c);
-
         try {
             switch (c) {
                 case "help":
@@ -35,28 +35,31 @@ public class DetermineCommand implements Command, Serializable {
                     products = help.returnTable();
                     break;
                 case "info":
-                    Command info = new InfoCommand(initializationDate);
-                    info.setProductHashtable(products);
-                    info.execute();
+                    InfoCommand info = new InfoCommand(initializationDate);
+                    transferClient.send(info);
+                    info= (InfoCommand) transferClient.receive();
+                    info.print();
                     System.out.println("Команда выполнена!");
                     break;
                 case "show":
-                    System.out.println(products.toString());
+                    ShowCommand show = new ShowCommand();
+                    transferClient.send(show);
+                    show = (ShowCommand) transferClient.receive();
+                    show.execute();
                     System.out.println("Команда выполнена!");
                     break;
                 case "clear":
                     Command cleaner = new ClearCommand();
-                    cleaner.setProductHashtable(products);
-                    cleaner.execute();
-                    products = cleaner.returnTable();
+                    transferClient.send(cleaner);
                     System.out.println("Команда выполнена!");
                     break;
                 case "exit":
                     System.exit(0);
                     break;
                 case "print_field_descending_price":
-                    Command printer = new PrintFieldDescendingPriceCommand();
-                    printer.setProductHashtable(products);
+                    PrintFieldDescendingPriceCommand printer = new PrintFieldDescendingPriceCommand();
+                    transferClient.send(printer);
+                    printer= (PrintFieldDescendingPriceCommand) transferClient.receive();
                     printer.execute();
                     System.out.println("Команда выполнена!");
                     break;
@@ -186,7 +189,7 @@ public class DetermineCommand implements Command, Serializable {
                     }
                     break;
             }
-        } catch (NullPointerException | IllegalVarValue e) {
+        } catch (NullPointerException | IllegalVarValue | ClassNotFoundException e) {
             System.out.println("Аргумент пуст!");
 
         }

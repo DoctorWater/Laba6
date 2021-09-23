@@ -21,7 +21,7 @@ public class ParseCommand implements Command, Serializable {
         filename=theFilename;
         args=theArgs;
     }
-    public void execute() throws RecursionExeption, IllegalVarValue, IOException {
+    public void execute() throws RecursionExeption, IllegalVarValue, IOException, ClassNotFoundException {
         s.clear();
         try {
             BufferedReader reader = new BufferedReader(new FileReader(filename));

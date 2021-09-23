@@ -6,14 +6,19 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.*;
-
+//TODO: создание продукта не в команде, но с передачей его в команду
 public class CreateNewProductCommand implements Command, Serializable {
     @Serial
     private static final long serialVersionUID = 5L;
     private Hashtable<String, Product> table;
     private final String key;
+    private Product product;
     public CreateNewProductCommand(String theKey){
         key=theKey;
+    }
+
+    public Product getProduct() {
+        return product;
     }
 
     public void execute() throws IllegalArgumentException, InputMismatchException {
@@ -122,7 +127,7 @@ public class CreateNewProductCommand implements Command, Serializable {
         CreateNewOrganization creator = new CreateNewOrganization(table);
         creator.execute();
         Organization organization = creator.returnCommand();
-        Product product = new Product(Product.checkId(table),name,coordinates,price,dateNow,partNumber,unit,organization,key);
+        product = new Product(Product.checkId(table),name,coordinates,price,dateNow,partNumber,unit,organization,key);
         table.put(key,product);
     }
 

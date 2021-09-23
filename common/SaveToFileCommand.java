@@ -5,7 +5,8 @@ import java.text.SimpleDateFormat;
 import java.util.Hashtable;
 
 
-public class SaveToFileCommand implements Command, Serializable {
+public class
+ SaveToFileCommand implements Command, Serializable {
     @Serial
     private static final long serialVersionUID = 19L;
     private final String filename;

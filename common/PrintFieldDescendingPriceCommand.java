@@ -9,7 +9,8 @@ import java.util.*;
 public class PrintFieldDescendingPriceCommand implements Command, Serializable {
     @Serial
     private static final long serialVersionUID = 14L;
-    private Hashtable<String, Product> table;
+    private Hashtable<String, Product> table = new Hashtable<String, Product>();
+
     public PrintFieldDescendingPriceCommand(){
 
     }

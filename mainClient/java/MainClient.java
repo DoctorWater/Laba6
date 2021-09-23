@@ -3,6 +3,8 @@ package mainClient.java;
 import common.*;
 
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
@@ -14,7 +16,7 @@ import java.util.*;
 
 public class MainClient {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
         //TODO: сделать в Command return
         Date initializationDate = new Date();
         /*Scanner in = new Scanner(System.in);
@@ -55,13 +57,8 @@ public class MainClient {
             catch (InvalidPathException e){
                 System.out.println("Имя файла неверно!");
             }*/
-        InetSocketAddress address = new InetSocketAddress("localhost", 1);
-        ParseCommand command1 = new ParseCommand("AllProducts.json", args);
-        Hashtable<String, Product> products=command1.returnTable();
-        InfoCommand command = new InfoCommand(initializationDate);
-        TransferClient transferClient = new TransferClient(address);
-        transferClient.send(command);
-        System.out.println("Отправлено");
+        TransferClient transferClient = new TransferClient();
+        InfoCommand info = (InfoCommand) transferClient.receive();
+        info.print();
     }
-
 }
