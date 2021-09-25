@@ -6,17 +6,16 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.Hashtable;
 
-public class ShowCommand implements Command, Serializable {
-    private static final long serialVersionUID = 22L;
-    Hashtable<String, Product> table = new Hashtable<String, Product>();
-    public void executeClient() throws IllegalVarValue {
-        System.out.println(table.isEmpty());
-        System.out.println(table.toString());
+public class RemoveCommand implements Command, Serializable {
+    private static final long serialVersionUID = 21L;
+    private String key;
+    private Hashtable<String, Product> table = new Hashtable<String, Product>();
+    public RemoveCommand(String key){
+        this.key=key;
     }
-
     @Override
     public void execute() throws IOException, RecursionExeption, IllegalVarValue, ClassNotFoundException {
-        System.out.println("Выполенена команда Show");
+        table.remove(key);
     }
 
     @Override
@@ -26,6 +25,6 @@ public class ShowCommand implements Command, Serializable {
 
     @Override
     public void setProductHashtable(Hashtable<String, Product> productHashtable) {
-        table=productHashtable;
+        this.table = productHashtable;
     }
 }

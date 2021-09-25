@@ -10,7 +10,7 @@ import java.util.Random;
 public class Organization implements StructureInterface, Serializable {
     @Serial
     private static final long serialVersionUID = 4L;
-    private Long id;
+    private Long id=null;
     private String name;
     private Float annualTurnover;
     private OrganizationType type;

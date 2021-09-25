@@ -24,7 +24,11 @@ public class Product implements Serializable {
         this.key=key;
     }
 
-    private final Long id; //Поле не может быть null, Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    private Long id; //Поле не может быть null, Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
     private String name; //Поле не может быть null, Строка не может быть пустой
     private final Coordinates coordinates; //Поле не может быть null
     private java.util.Date creationDate; //Поле не может быть null, Значение этого поля должно генерироваться автоматически

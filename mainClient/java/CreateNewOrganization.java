@@ -2,21 +2,21 @@ package mainClient.java;
 
 import common.Product;
 
+import java.io.Serializable;
 import java.util.Hashtable;
 import java.util.InputMismatchException;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
-public class CreateNewOrganization {
+public class CreateNewOrganization implements Serializable {
+    private static final long serialVersionUID = 24L;
     private final Hashtable<String, Product> table;
     private final Organization organization = new Organization();
     public CreateNewOrganization(Hashtable<String, Product> theTable){
         table=theTable;
     }
-    public void execute() throws IllegalArgumentException, InputMismatchException {
+    public void executeClient() throws IllegalArgumentException, InputMismatchException {
         Scanner in = new Scanner(System.in);
-        String type;
-        float annualTurnover;
         String name;
         while (true) {
             try {
@@ -30,6 +30,7 @@ public class CreateNewOrganization {
                 System.out.println("Неверное имя!");
             }
         }
+        float annualTurnover;
         while (true) {
             try {
                 System.out.println("Введите значение оборота");
@@ -43,6 +44,7 @@ public class CreateNewOrganization {
                 in.nextLine();
             }
         }
+        String type;
         while (true) {
             try {
                 System.out.println("Введите единицу измерения. Варианты: \n" +
@@ -64,7 +66,6 @@ public class CreateNewOrganization {
             }
         }
         organization.stringToEnum(type);
-        organization.setId(Organization.checkId(table));
         organization.setName(name);
         organization.setAnnualTurnover(annualTurnover);
     }

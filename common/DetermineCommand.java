@@ -1,25 +1,23 @@
 package common;
 
+import mainClient.java.ClientSender;
 import mainClient.java.IllegalVarValue;
 import mainClient.java.SearchId;
-import mainClient.java.TransferClient;
+import mainClient.java.ClientReceiver;
 
 import java.io.*;
 import java.util.*;
 
-public class DetermineCommand implements Command, Serializable {
+public class DetermineCommand implements Serializable {
     @Serial
     private static final long serialVersionUID = 6L;
     private String c;
     private Hashtable<String, Product> products;
-    private final String filename;
     private final ArrayList<String> commands;
     private final ArrayList<String> previousFilenames;
     private final Date initializationDate;
-    private TransferClient transferClient;
-    public DetermineCommand (String theC, String theFilename, ArrayList<String> theCommands, ArrayList<String> thePreviousFilenames, Date theInitializationDate) throws IOException {
+    public DetermineCommand (String theC,  ArrayList<String> theCommands, ArrayList<String> thePreviousFilenames, Date theInitializationDate) throws IOException {
         c=theC;
-        filename=theFilename;
         commands=theCommands;
         previousFilenames=thePreviousFilenames;
         initializationDate=theInitializationDate;
@@ -36,21 +34,21 @@ public class DetermineCommand implements Command, Serializable {
                     break;
                 case "info":
                     InfoCommand info = new InfoCommand(initializationDate);
-                    transferClient.send(info);
-                    info= (InfoCommand) transferClient.receive();
+                    ClientSender.send(info);
+                    info= (InfoCommand) ClientReceiver.receive();
                     info.print();
                     System.out.println("Команда выполнена!");
                     break;
                 case "show":
                     ShowCommand show = new ShowCommand();
-                    transferClient.send(show);
-                    show = (ShowCommand) transferClient.receive();
-                    show.execute();
+                    ClientSender.send(show);
+                    show = (ShowCommand) ClientReceiver.receive();
+                    show.executeClient();
                     System.out.println("Команда выполнена!");
                     break;
                 case "clear":
                     Command cleaner = new ClearCommand();
-                    transferClient.send(cleaner);
+                    ClientSender.send(cleaner);
                     System.out.println("Команда выполнена!");
                     break;
                 case "exit":
@@ -58,19 +56,14 @@ public class DetermineCommand implements Command, Serializable {
                     break;
                 case "print_field_descending_price":
                     PrintFieldDescendingPriceCommand printer = new PrintFieldDescendingPriceCommand();
-                    transferClient.send(printer);
-                    printer= (PrintFieldDescendingPriceCommand) transferClient.receive();
+                    ClientSender.send(printer);
+                    printer= (PrintFieldDescendingPriceCommand) ClientReceiver.receive();
                     printer.execute();
                     System.out.println("Команда выполнена!");
                     break;
                 case "history":
                     for (String command : commands) System.out.println(command);
                     System.out.println("Команда выполнена!");
-                    break;
-                case "save":
-                    Command saver = new SaveToFileCommand(filename);
-                    saver.setProductHashtable(products);
-                    saver.execute();
                     break;
                 default:
                     if (scanner.findInLine("^insert+\\s+\\w+") != null) {
@@ -79,13 +72,9 @@ public class DetermineCommand implements Command, Serializable {
                             c = scanner.findInLine("\\s+\\w+\\s*");
                             scanner = new Scanner(c);
                             c = scanner.findInLine("\\w+");
-
-                            CreateNewProductCommand creatorIns = new CreateNewProductCommand(c);
-                            creatorIns.setProductHashtable(products);
-                            creatorIns.execute();
-                            products = creatorIns.returnTable();
-                            System.out.println(products.toString());
-                            System.out.println("Команда выполнена!");
+                            CreateNewProductCommand creator = new CreateNewProductCommand(c);
+                            creator.executeClient();
+                            ClientSender.send(creator);
                         } catch (NumberFormatException | NullPointerException e) {
                             System.out.println("Неверный ключ!");
                         }
@@ -96,8 +85,8 @@ public class DetermineCommand implements Command, Serializable {
                             scanner = new Scanner(c);
                             c = scanner.findInLine("\\w+");
                             try {
-                                products.remove(c);
-                                System.out.println("Команда выполнена!");
+                                RemoveCommand remover = new RemoveCommand(c);
+                                ClientSender.send(remover);
                             } catch (NumberFormatException e) {
                                 System.out.println("Неверный ключ!");
                             }
@@ -125,8 +114,7 @@ public class DetermineCommand implements Command, Serializable {
                                     c = scanner.findInLine("\\s+\\S+");
                                     scanner = new Scanner(c);
                                     c = scanner.findInLine("\\S+");
-                                    ExecuteCommand execution = new ExecuteCommand(c, previousFilenames, filename, commands, initializationDate);
-                                    execution.setProductHashtable(products);
+                                    ExecuteCommand execution = new ExecuteCommand(c, previousFilenames, commands, initializationDate);
                                     execution.execute();
                                 } else {
                                     if (scanner.findInLine("^filter_greater_than_unit_of_measure+\\s+") != null) {
@@ -193,13 +181,5 @@ public class DetermineCommand implements Command, Serializable {
             System.out.println("Аргумент пуст!");
 
         }
-    }
-    public Hashtable<String, Product> returnTable(){
-        return products;
-    }
-
-    @Override
-    public void setProductHashtable(Hashtable<String, Product> productHashtable) {
-        this.products=productHashtable;
     }
 }

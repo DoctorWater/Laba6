@@ -11,9 +11,6 @@ public class ClearCommand implements  Command, Serializable {
     @Serial
     private static final long serialVersionUID = 27L;
     private Hashtable<String, Product> table = new Hashtable<String, Product>();
-    public ClearCommand(){
-
-    }
 
     @Override
     public void execute() throws IOException, RecursionExeption, IllegalVarValue {

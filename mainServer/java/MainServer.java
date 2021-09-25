@@ -5,17 +5,11 @@ import mainClient.java.*;
 
 
 import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.net.SocketAddress;
-import java.nio.channels.DatagramChannel;
-import java.nio.file.InvalidPathException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
 
 
 public class MainServer {
-    public static void main(String[] args) throws IOException, ClassNotFoundException, RecursionExeption, IllegalVarValue {
+    public static void main(String[] args) throws IOException, ClassNotFoundException, RecursionExeption, IllegalVarValue, InterruptedException {
         /*Scanner in = new Scanner(System.in);
             try {
                 Date initializationDate = new Date();
@@ -55,10 +49,20 @@ public class MainServer {
             catch (InvalidPathException e){
                 System.out.println("Имя файла неверно!");
             }*/
-        InetSocketAddress address = new InetSocketAddress(1);
-        TransferServer server = new TransferServer(address);
-        InfoCommand info = new InfoCommand(new Date());
-        server.send(info);
+        Command currentCommand;
+        ParseCommand parser = new ParseCommand("D:\\Labs\\Lab6 — копия\\Laba6Client\\src\\mainServer\\java\\AllProducts.json", args);
+        parser.execute();
+        Hashtable<String, Product> table = parser.returnTable();
+        while (true) {
+            System.out.println("Ожидание команды...");
+            currentCommand = ServerReceiver.receive();
+            currentCommand.setProductHashtable(table);
+            currentCommand.execute();
+            table= currentCommand.returnTable();
+            Thread.sleep(200);
+            ServerSender.send(currentCommand);
+            System.out.println("Команда выполнена!");
+        }
     }
 
 }

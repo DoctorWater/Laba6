@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.util.Hashtable;
 
 public class Checkers implements Serializable {
+    private static final long serialVersionUID = 25L;
     public static class CheckPartNumber {
         public static boolean check (Hashtable<String, Product> productHashtable, String partNumber){
             final int[] checker = {1};

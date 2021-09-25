@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.Hashtable;
 
 public class ExitCommand implements Command, Serializable {
+    private static final long serialVersionUID = 23L;
     Hashtable<String, Product> table = new Hashtable<>();
     String filename="";
     @Override
