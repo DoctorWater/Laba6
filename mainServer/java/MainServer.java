@@ -13,6 +13,7 @@ import java.util.*;
 public class MainServer {
     public static void main(String[] args) throws IOException, ClassNotFoundException, RecursionExeption, IllegalVarValue {
         try {
+            Scanner in = new Scanner(System.in);
             String buffer = args[0];
             Path filenamePath = Paths.get(buffer);
             try {
@@ -23,7 +24,7 @@ public class MainServer {
             }
             String address;
             Integer port;
-            Scanner in = new Scanner(System.in);
+
             while (true) {
                 try {
                     System.out.println("Введите адрес и порт, пожалуйста: " +
@@ -36,6 +37,7 @@ public class MainServer {
                     break;
                 } catch (InputMismatchException e) {
                     System.out.println("Укажите верный порт!");
+                    in.nextLine();
                 }
             }
             InetSocketAddress socketAddress = new InetSocketAddress(address, port);

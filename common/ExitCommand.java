@@ -16,6 +16,7 @@ public class ExitCommand implements Command, Serializable {
         SaveToFileCommand save = new SaveToFileCommand(FilenameHolder.getFilename());
         save.setProductHashtable(table);
         save.execute();
+        System.exit(0);
     }
 
     @Override
