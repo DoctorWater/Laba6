@@ -30,6 +30,7 @@ public class MainClient {
                         break;
                     }catch (InputMismatchException e) {
                         System.out.println("Укажите верный порт!");
+                        in.nextLine();
                     }
                 }
                 in.nextLine();
@@ -41,7 +42,7 @@ public class MainClient {
                     buffer = in.nextLine();
                     scanner = new Scanner(buffer);
                     bufferIfer = scanner.findInLine("^\\S+");
-                    if (bufferIfer.equals("help") | bufferIfer.equals("info") | bufferIfer.equals("show") | bufferIfer.equals("insert") | bufferIfer.equals("update") | bufferIfer.equals("remove_key") | bufferIfer.equals("clear") | bufferIfer.equals("save") | bufferIfer.equals("execute_script") | bufferIfer.equals("remove_greater") | bufferIfer.equals("remove_lower") | bufferIfer.equals("history") | bufferIfer.equals("count_greater_than_part_number") | bufferIfer.equals("filter_greater_than_unit_of_measure") | bufferIfer.equals("print_field_descending_price")) {
+                    if (bufferIfer.equals("help") | bufferIfer.equals("info") | bufferIfer.equals("show") | bufferIfer.equals("insert") | bufferIfer.equals("update") | bufferIfer.equals("remove_key") | bufferIfer.equals("clear") | bufferIfer.equals("execute_script") | bufferIfer.equals("remove_greater") | bufferIfer.equals("remove_lower") | bufferIfer.equals("history") | bufferIfer.equals("count_greater_than_part_number") | bufferIfer.equals("filter_greater_than_unit_of_measure") | bufferIfer.equals("print_field_descending_price")) {
                         commands.add(bufferIfer);
                     }
                     DetermineCommand determinator= new DetermineCommand(buffer, commands, new ArrayList<>(), initializationDate, socketAddress);
