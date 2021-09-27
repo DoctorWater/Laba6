@@ -3,66 +3,65 @@ package mainServer.java;
 import common.*;
 import mainClient.java.*;
 
-
 import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.nio.file.InvalidPathException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
-
 public class MainServer {
-    public static void main(String[] args) throws IOException, ClassNotFoundException, RecursionExeption, IllegalVarValue, InterruptedException {
-        /*Scanner in = new Scanner(System.in);
+    public static void main(String[] args) throws IOException, ClassNotFoundException, RecursionExeption, IllegalVarValue {
+        try {
+            String buffer = args[0];
+            Path filenamePath = Paths.get(buffer);
             try {
-                Date initializationDate = new Date();
-                String bufferIfer;
-                Scanner scanner = new Scanner(buffer);
-                String filename = "AllProducts.json";
-                Path filenamePath= Paths.get(filename);
-                if(filenamePath.toRealPath().toString().length()>3 && filenamePath.toRealPath().toString().trim().startsWith("/dev"))
-                    throw new InvalidPathException("","Строка не может быть преобразована в путь!");
-                ParseCommand parser = new ParseCommand(filename, args);
-                parser.execute();
-                Hashtable<String, Product> products = parser.returnTable();
-                ArrayList<String> commands = new ArrayList<>();
-                while (true) {
-                    System.out.println("ВВЕДИТЕ КОМАНДУ (ВВЕДИТЕ help ДЛЯ ПОЛУЧЕНИЯ СПИСКА ИСПОЛНЯЕМЫХ КОМАНД): ");
-                    buffer = in.nextLine();
-                    scanner = new Scanner(buffer);
-                    bufferIfer = scanner.findInLine("^\\S+");
-                    if (bufferIfer.equals("help") | bufferIfer.equals("info") | bufferIfer.equals("show") | bufferIfer.equals("insert") | bufferIfer.equals("update") | bufferIfer.equals("remove_key") | bufferIfer.equals("clear") | bufferIfer.equals("save") | bufferIfer.equals("execute_script") | bufferIfer.equals("remove_greater") | bufferIfer.equals("remove_lower") | bufferIfer.equals("history") | bufferIfer.equals("count_greater_than_part_number") | bufferIfer.equals("filter_greater_than_unit_of_measure") | bufferIfer.equals("print_field_descending_price")) {
-                        commands.add(bufferIfer);
-                    }
-                    DetermineCommand determinator= new DetermineCommand(buffer, filename, commands, new ArrayList<>(), initializationDate);
-                    determinator.setProductHashtable(products);
-                    determinator.execute();
-                    products = determinator.returnTable();
-                }
-            } catch (IllegalVarValue | IOException | RecursionExeption e) {
+                if (filenamePath.toRealPath().toString().length() > 3 && filenamePath.toRealPath().toString().trim().startsWith("/dev"))
+                    throw new InvalidPathException("", "Строка не может быть преобразована в путь!");
+            } catch (InvalidPathException e) {
                 System.out.println(e.getMessage());
+            }
+            String address;
+            Integer port;
+            Scanner in = new Scanner(System.in);
+            while (true) {
+                try {
+                    System.out.println("Введите адрес и порт, пожалуйста: " +
+                            "Адрес: ");
+                    address = in.nextLine();
+                    System.out.println("Порт: ");
+                    port = in.nextInt();
+                    if(port<2)
+                        throw new InputMismatchException();
+                    break;
+                } catch (InputMismatchException e) {
+                    System.out.println("Укажите верный порт!");
+                }
+            }
+            InetSocketAddress socketAddress = new InetSocketAddress(address, port);
+            try {
+                Command currentCommand;
+                ParseCommand parser = new ParseCommand(filenamePath.toString(), args);
+                parser.execute();
+                FilenameHolder.setFilename(filenamePath.toString());
+                Hashtable<String, Product> table = parser.returnTable();
+                while (true) {
+                    System.out.println("Ожидание команды...");
+                    currentCommand = ServerReceiver.receive(socketAddress);
+                    currentCommand.setProductHashtable(table);
+                    currentCommand.execute();
+                    table = currentCommand.returnTable();
+                    ServerSender.send(currentCommand, socketAddress);
+                    System.out.println("Команда выполнена!");
+                }
             } catch (NoSuchElementException e) {
                 System.out.println("Нажато Ctrl+D, программа завершена!");
                 System.exit(0);
             }
-            catch (ArrayIndexOutOfBoundsException e) {
-               System.out.println("Вы не передали адрес файла *.json!");
-               System.exit(0);
-            }
-            catch (InvalidPathException e){
-                System.out.println("Имя файла неверно!");
-            }*/
-        Command currentCommand;
-        ParseCommand parser = new ParseCommand("D:\\Labs\\Lab6 — копия\\Laba6Client\\src\\mainServer\\java\\AllProducts.json", args);
-        parser.execute();
-        Hashtable<String, Product> table = parser.returnTable();
-        while (true) {
-            System.out.println("Ожидание команды...");
-            currentCommand = ServerReceiver.receive();
-            currentCommand.setProductHashtable(table);
-            currentCommand.execute();
-            table= currentCommand.returnTable();
-            Thread.sleep(200);
-            ServerSender.send(currentCommand);
-            System.out.println("Команда выполнена!");
+        }
+        catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("Вы не передали адрес файла *.json!");
+            System.exit(0);
         }
     }
-
 }

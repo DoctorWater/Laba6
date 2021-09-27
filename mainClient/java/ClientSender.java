@@ -13,8 +13,8 @@ import java.nio.channels.DatagramChannel;
 
 public class ClientSender implements Serializable {
     private static final long serialVersionUID = 31L;
-    private static final SocketAddress socketAddressChannel = new InetSocketAddress("localhost", 2030);
-    public static void send(Command com) throws IOException {
+
+    public static void send(Command com, InetSocketAddress socketAddress) throws IOException {
         ByteBuffer bb;
         DatagramChannel datagramChannel = DatagramChannel.open();
         datagramChannel.bind(null);
@@ -24,7 +24,7 @@ public class ClientSender implements Serializable {
         oos.writeObject(com);
         oos.flush();
         bb = ByteBuffer.wrap(baos.toByteArray(), 0, baos.size());
-        datagramChannel.send(bb, socketAddressChannel);
+        datagramChannel.send(bb, socketAddress);
         baos.close();
         oos.close();
         datagramChannel.close();

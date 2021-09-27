@@ -5,30 +5,34 @@ import mainClient.java.ProductComporators;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.*;
+import java.util.stream.Stream;
 
 public class FilterGreaterUoMCommand implements Command, Serializable {
     @Serial
     private static final long serialVersionUID = 8L;
     private Hashtable<String, Product> table;
     private final String UoM;
-    public FilterGreaterUoMCommand(String theUoM){
-        UoM=theUoM;
+
+    public FilterGreaterUoMCommand(String UoM) {
+        this.UoM = UoM;
     }
-    public void execute(){
+
+    public void execute() {
+
+    }
+
+    public void executeClient() {
         try {
+
             if (!UoM.equals("SQUARE_METERS") && !UoM.equals("PCS") && !UoM.equals("LITERS") && !UoM.equals("MILLILITERS") && !UoM.equals("GRAMS"))
                 throw new IllegalArgumentException("Неверная величина!");
-            List<Product> tableValues= new ArrayList<>(table.values());
+            List<Product> tableValues = new ArrayList<>(table.values());
+            Product[] products = tableValues.toArray(new Product[0]);
             Comparator<Product> pcomp = new ProductComporators.ProductUoMComparator();
-            tableValues.sort(pcomp);
-            for(Product  p : tableValues){
-                if (p.getUnitOfMeasureString().compareTo(UoM)>0){
-                    System.out.println(p.getName() + " " + p.getUnitOfMeasureString());
-                }
-            }
+            Stream<Product> stream = Arrays.stream(products);
+            stream.sorted(pcomp).filter(x -> x.getUnitOfMeasureString().compareTo(UoM) > 0).forEach(x -> System.out.println(x.getName() + " " + x.getUnitOfMeasureString()));
         }
-        catch (IllegalArgumentException e)
-        {
+        catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -40,6 +44,6 @@ public class FilterGreaterUoMCommand implements Command, Serializable {
 
     @Override
     public void setProductHashtable(Hashtable<String, Product> productHashtable) {
-        this.table=productHashtable;
+        this.table = productHashtable;
     }
 }

@@ -3,8 +3,10 @@ package common;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class CountGreaterPNCommand implements Command, Serializable {
     @Serial
@@ -26,12 +28,9 @@ public class CountGreaterPNCommand implements Command, Serializable {
     }
     public void execute (){
         List<Product> tableValues= new ArrayList<>(productHashtable.values());
-        for(Product  p : tableValues){
-            if (Integer.parseInt(p.getPartNumber())>checker){
-                counter++;
-            }
-        }
-        //System.out.println("Количество элементов, значение поля partNumber которых больше заданного: " + counter);
+        Product[] products = tableValues.toArray(new Product[0]);
+        Stream<Product> stream = Arrays.stream(products);
+        stream.filter(x->Integer.parseInt(x.getPartNumber())>checker).forEach(x->counter++);
     }
 
     @Override

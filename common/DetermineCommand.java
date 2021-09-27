@@ -2,10 +2,9 @@ package common;
 
 import mainClient.java.ClientSender;
 import mainClient.java.IllegalVarValue;
-import mainClient.java.SearchId;
 import mainClient.java.ClientReceiver;
-
 import java.io.*;
+import java.net.InetSocketAddress;
 import java.util.*;
 
 public class DetermineCommand implements Serializable {
@@ -16,12 +15,17 @@ public class DetermineCommand implements Serializable {
     private final ArrayList<String> commands;
     private final ArrayList<String> previousFilenames;
     private final Date initializationDate;
-    public DetermineCommand (String theC,  ArrayList<String> theCommands, ArrayList<String> thePreviousFilenames, Date theInitializationDate) throws IOException {
-        c=theC;
-        commands=theCommands;
-        previousFilenames=thePreviousFilenames;
-        initializationDate=theInitializationDate;
+    private boolean serverAnswer = false;
+    private final InetSocketAddress address;
+
+    public DetermineCommand(String theC, ArrayList<String> theCommands, ArrayList<String> thePreviousFilenames, Date theInitializationDate, InetSocketAddress address) throws IOException {
+        c = theC;
+        commands = theCommands;
+        previousFilenames = thePreviousFilenames;
+        initializationDate = theInitializationDate;
+        this.address=address;
     }
+
     public void execute() throws IOException, RecursionExeption {
         Scanner scanner = new Scanner(c);
         try {
@@ -34,30 +38,32 @@ public class DetermineCommand implements Serializable {
                     break;
                 case "info":
                     InfoCommand info = new InfoCommand(initializationDate);
-                    ClientSender.send(info);
-                    info= (InfoCommand) ClientReceiver.receive();
+                    ClientSender.send(info, address);
+                    info = (InfoCommand) ClientReceiver.receive(address);
                     info.print();
                     System.out.println("Команда выполнена!");
                     break;
                 case "show":
                     ShowCommand show = new ShowCommand();
-                    ClientSender.send(show);
-                    show = (ShowCommand) ClientReceiver.receive();
+                    ClientSender.send(show,address);
+                    show = (ShowCommand) ClientReceiver.receive(address);
                     show.executeClient();
                     System.out.println("Команда выполнена!");
                     break;
+                case "exit":
+                    ExitCommand exitCommand = new ExitCommand();
+                    ClientSender.send(exitCommand,address);
+                    System.exit(0);
+                    break;
                 case "clear":
                     Command cleaner = new ClearCommand();
-                    ClientSender.send(cleaner);
+                    ClientSender.send(cleaner,address);
                     System.out.println("Команда выполнена!");
-                    break;
-                case "exit":
-                    System.exit(0);
                     break;
                 case "print_field_descending_price":
                     PrintFieldDescendingPriceCommand printer = new PrintFieldDescendingPriceCommand();
-                    ClientSender.send(printer);
-                    printer= (PrintFieldDescendingPriceCommand) ClientReceiver.receive();
+                    ClientSender.send(printer,address);
+                    printer = (PrintFieldDescendingPriceCommand) ClientReceiver.receive(address);
                     printer.execute();
                     System.out.println("Команда выполнена!");
                     break;
@@ -72,9 +78,13 @@ public class DetermineCommand implements Serializable {
                             c = scanner.findInLine("\\s+\\w+\\s*");
                             scanner = new Scanner(c);
                             c = scanner.findInLine("\\w+");
+                            ShowCommand helper = new ShowCommand();
+                            ClientSender.send(helper,address);
+                            helper = (ShowCommand) ClientReceiver.receive(address);
                             CreateNewProductCommand creator = new CreateNewProductCommand(c);
+                            creator.setProductHashtable(helper.returnTable());
                             creator.executeClient();
-                            ClientSender.send(creator);
+                            ClientSender.send(creator,address);
                         } catch (NumberFormatException | NullPointerException e) {
                             System.out.println("Неверный ключ!");
                         }
@@ -86,7 +96,11 @@ public class DetermineCommand implements Serializable {
                             c = scanner.findInLine("\\w+");
                             try {
                                 RemoveCommand remover = new RemoveCommand(c);
-                                ClientSender.send(remover);
+                                ClientSender.send(remover,address);
+                                remover = (RemoveCommand) ClientReceiver.receive(address);
+                                String answer=remover.isChecker()?"Команда выполнена!":"Такого элемента нет!";
+                                System.out.println(answer);
+
                             } catch (NumberFormatException e) {
                                 System.out.println("Неверный ключ!");
                             }
@@ -97,14 +111,22 @@ public class DetermineCommand implements Serializable {
                                     c = scanner.findInLine("\\s+\\w+\\s*");
                                     scanner = new Scanner(c);
                                     c = scanner.findInLine("\\w+");
-                                    String key = SearchId.search(products, c);
-                                    products.remove(key);
-                                    CreateNewProductCommand creatorUp = new CreateNewProductCommand(c);
-                                    creatorUp.setProductHashtable(products);
-                                    creatorUp.execute();
-                                    products = creatorUp.returnTable();
-                                    System.out.println("Команда выполнена!");
-
+                                    RemoveCommand remover = new RemoveCommand(c);
+                                    ClientSender.send(remover,address);
+                                    remover = (RemoveCommand) ClientReceiver.receive(address);
+                                    if(!remover.isChecker()){
+                                        System.out.println("Такого элемента нет!");
+                                    }
+                                    else{
+                                        UpdateCommand updateCommand = new UpdateCommand();
+                                        ClientSender.send(updateCommand, address);
+                                        updateCommand = (UpdateCommand) ClientReceiver.receive(address);
+                                        CreateNewProductCommand creator = new CreateNewProductCommand(updateCommand.getKey());
+                                        creator.setProductHashtable(updateCommand.returnTable());
+                                        creator.executeClient();
+                                        ClientSender.send(creator,address);
+                                        System.out.println("Команда выполнена!");
+                                    }
                                 } catch (NumberFormatException e1) {
                                     System.out.println("Неверный ID!");
                                 }
@@ -114,7 +136,7 @@ public class DetermineCommand implements Serializable {
                                     c = scanner.findInLine("\\s+\\S+");
                                     scanner = new Scanner(c);
                                     c = scanner.findInLine("\\S+");
-                                    ExecuteCommand execution = new ExecuteCommand(c, previousFilenames, commands, initializationDate);
+                                    ExecuteCommand execution = new ExecuteCommand(c, previousFilenames, commands, initializationDate, address);
                                     execution.execute();
                                 } else {
                                     if (scanner.findInLine("^filter_greater_than_unit_of_measure+\\s+") != null) {
@@ -122,9 +144,10 @@ public class DetermineCommand implements Serializable {
                                         c = scanner.findInLine("\\s+\\w+");
                                         scanner = new Scanner(c);
                                         c = scanner.findInLine("\\w+");
-                                        Command filter = new FilterGreaterUoMCommand(c);
-                                        filter.setProductHashtable(products);
-                                        filter.execute();
+                                        FilterGreaterUoMCommand filter = new FilterGreaterUoMCommand(c);
+                                        ClientSender.send(filter,address);
+                                        filter = (FilterGreaterUoMCommand) ClientReceiver.receive(address);
+                                        filter.executeClient();
                                         System.out.println("Команда выполнена!");
                                     } else {
                                         if (scanner.findInLine("^remove_greater+\\s+") != null) {
@@ -133,9 +156,7 @@ public class DetermineCommand implements Serializable {
                                             scanner = new Scanner(c);
                                             c = scanner.findInLine("\\w+");
                                             RemoveGreaterCommand removeG = new RemoveGreaterCommand(c);
-                                            removeG.setProductHashtable(products);
-                                            removeG.execute();
-                                            products=removeG.returnTable();
+                                            ClientSender.send(removeG,address);
                                             System.out.println("Команда выполнена!");
                                         } else {
                                             if (scanner.findInLine("^remove_lower+\\s+") != null) {
@@ -144,9 +165,7 @@ public class DetermineCommand implements Serializable {
                                                 scanner = new Scanner(c);
                                                 c = scanner.findInLine("\\w+");
                                                 RemoveSmallerCommand removeS = new RemoveSmallerCommand(c);
-                                                removeS.setProductHashtable(products);
-                                                removeS.execute();
-                                                products=removeS.returnTable();
+                                                ClientSender.send(removeS,address);
                                                 System.out.println("Команда выполнена!");
                                             } else {
                                                 if (scanner.findInLine("^count_greater_than_part_number+\\s+") != null) {
@@ -156,8 +175,9 @@ public class DetermineCommand implements Serializable {
                                                     c = scanner.findInLine("\\w+");
                                                     try {
                                                         CountGreaterPNCommand counter = new CountGreaterPNCommand(Integer.parseInt(c));
-                                                        counter.setProductHashtable(products);
-                                                        counter.execute();
+                                                        ClientSender.send(counter,address);
+                                                        counter = (CountGreaterPNCommand) ClientReceiver.receive(address);
+                                                        System.out.println(counter.getCounter());
                                                         System.out.println("Команда выполнена!");
                                                     } catch (NumberFormatException e) {
                                                         System.out.println("Неверное сравнительное значение!");
@@ -178,7 +198,7 @@ public class DetermineCommand implements Serializable {
                     break;
             }
         } catch (NullPointerException | IllegalVarValue | ClassNotFoundException e) {
-            System.out.println("Аргумент пуст!");
+            System.out.println("Аргумент пуст или сервер недоступен!");
 
         }
     }

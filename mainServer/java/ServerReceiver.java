@@ -6,31 +6,40 @@ import java.io.*;
 import java.net.*;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
+import java.nio.channels.UnresolvedAddressException;
+import java.util.Arrays;
 
 public class ServerReceiver {
-    private static SocketAddress socketAddressChannel = new InetSocketAddress("localhost", 2030);
-    public static Command receive() throws IOException, ClassNotFoundException {
-        ByteBuffer bb = ByteBuffer.allocate(1024);
-        DatagramChannel datagramChannel = DatagramChannel.open();
-        datagramChannel.bind(socketAddressChannel);
-        datagramChannel.configureBlocking(false);
-        while (true) {
-            bb.clear();
-            SocketAddress from = datagramChannel.receive(bb);
-            if (from!=null) {
-                bb.flip();
-                break;
+    public static Command receive(InetSocketAddress socketAddressChannel) throws IOException, ClassNotFoundException {
+        Command command=null;
+        try {
+            ByteBuffer bb = ByteBuffer.allocate(2048);
+            DatagramChannel datagramChannel = DatagramChannel.open();
+            datagramChannel.bind(socketAddressChannel);
+            datagramChannel.configureBlocking(false);
+            while (true) {
+                bb.clear();
+                SocketAddress from = datagramChannel.receive(bb);
+                if (from != null) {
+                    bb.flip();
+                    break;
+                }
             }
+            ByteArrayInputStream bais = new ByteArrayInputStream(bb.array());
+            ObjectInputStream ois = new ObjectInputStream(bais);
+            System.out.println(Arrays.toString(bb.array()));
+            command = (Command) ois.readObject();
+            datagramChannel.close();
+            ois.close();
+            bais.close();
+            bb.clear();
+        }catch (UnresolvedAddressException e)
+        {
+            System.out.println("Что-то пошло не так при подключении к клиенту!");
         }
-        ByteArrayInputStream bais = new ByteArrayInputStream(bb.array());
-        ObjectInputStream ois = new ObjectInputStream(bais);
-        Command command;
-        command = (Command) ois.readObject();
-        datagramChannel.close();
-        ois.close();
-        bais.close();
-        bb.clear();
+        finally {
+            return command;
+        }
 
-        return command;
     }
 }

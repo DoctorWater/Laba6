@@ -8,11 +8,8 @@ import java.io.ObjectOutputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetSocketAddress;
-import java.net.SocketAddress;
-
 public class ServerSender {
-    private static SocketAddress address = new InetSocketAddress("localhost", 60000);
-    public static void send(Command com) throws IOException {
+    public static void send(Command com, InetSocketAddress address) throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream oos = new ObjectOutputStream(baos);
         byte[] buffer;
@@ -20,7 +17,9 @@ public class ServerSender {
         oos.flush();
         buffer = baos.toByteArray();
         DatagramSocket s = new DatagramSocket();
-        DatagramPacket outputPacket = new DatagramPacket(buffer, buffer.length, address);
+        int port =address.getPort()-1;
+        InetSocketAddress newAddress = new InetSocketAddress(address.getAddress(),port);
+        DatagramPacket outputPacket = new DatagramPacket(buffer, buffer.length, newAddress);
         s.send(outputPacket);
         s.close();
         oos.close();

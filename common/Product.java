@@ -1,8 +1,5 @@
 package common;
 
-import mainClient.java.Coordinates;
-import mainClient.java.Organization;
-
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;

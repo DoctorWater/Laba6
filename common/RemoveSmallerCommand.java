@@ -4,10 +4,8 @@ import mainClient.java.ProductComporators;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Hashtable;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Stream;
 
 public class RemoveSmallerCommand implements Command, Serializable {
     @Serial
@@ -19,13 +17,11 @@ public class RemoveSmallerCommand implements Command, Serializable {
     }
     public void execute(){
         List<Product> tableValues= new ArrayList<>(table.values());
+        Product[] products = tableValues.toArray(new Product[0]);
+        Stream<Product> stream = Arrays.stream(products);
+        Integer index = tableValues.indexOf(table.get(key));
         Comparator<Product> pcomp = new ProductComporators.ProductNameComparator().thenComparing(new ProductComporators.ProductPriceComparator());
-        tableValues.sort(pcomp);
-        for(Product  p : tableValues){
-            if (tableValues.indexOf(p)>tableValues.indexOf(table.get(key))){
-                table.remove(p.getKey());
-            }
-        }
+        stream.sorted(pcomp).limit(index).forEach(x->table.remove(x.getKey()));
     }
     public Hashtable<String, Product> returnTable(){
         return table;

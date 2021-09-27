@@ -1,8 +1,9 @@
 package common;
 
 import mainClient.java.IllegalVarValue;
+import mainServer.java.FilenameHolder;
+import mainServer.java.SaveToFileCommand;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Hashtable;
@@ -10,10 +11,11 @@ import java.util.Hashtable;
 public class ExitCommand implements Command, Serializable {
     private static final long serialVersionUID = 23L;
     Hashtable<String, Product> table = new Hashtable<>();
-    String filename="";
     @Override
     public void execute() throws IOException, RecursionExeption, IllegalVarValue {
-        SaveToFileCommand save = new SaveToFileCommand(filename);
+        SaveToFileCommand save = new SaveToFileCommand(FilenameHolder.getFilename());
+        save.setProductHashtable(table);
+        save.execute();
     }
 
     @Override
