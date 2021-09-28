@@ -1,2 +1,0 @@
-help
-execute C:\\Users\\malck\\OneDrive\\Документы\\Лабы\\Laba5\\src\\main\\java\\Commands2.txt
