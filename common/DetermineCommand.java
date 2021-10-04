@@ -8,7 +8,7 @@ import java.net.InetSocketAddress;
 import java.util.*;
 
 public class DetermineCommand implements Serializable {
-    @Serial
+     
     private static final long serialVersionUID = 6L;
     private String c;
     private Hashtable<String, Product> products;

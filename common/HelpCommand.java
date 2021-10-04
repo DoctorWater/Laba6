@@ -1,11 +1,11 @@
 package common;
 
-import java.io.Serial;
+  
 import java.io.Serializable;
 import java.util.Hashtable;
 
 public class HelpCommand implements Command, Serializable {
-    @Serial
+     
     private static final long serialVersionUID = 9L;
     private Hashtable<String, Product> table;
     public HelpCommand(){

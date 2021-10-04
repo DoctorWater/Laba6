@@ -7,11 +7,16 @@ import java.net.*;
 public class ClientReceiver implements Serializable{
     private static final long serialVersionUID = 26L;
     public static Command receive(InetSocketAddress socketAddress) throws ClassNotFoundException {
+        Integer port=1;
         Command com = null;
         try {
             byte[] buffer = new byte[2048];
             DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
-            DatagramSocket socket = new DatagramSocket(socketAddress.getPort()-1);
+            if(socketAddress.getPort()==1)
+                port=65535;
+            else
+                port=socketAddress.getPort()-1;
+            DatagramSocket socket = new DatagramSocket(port);
             socket.setSoTimeout(5000);
             socket.receive(packet);
             ByteArrayInputStream bais = new ByteArrayInputStream(buffer);

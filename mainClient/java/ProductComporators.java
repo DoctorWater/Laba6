@@ -2,12 +2,12 @@ package mainClient.java;
 
 import common.Product;
 
-import java.io.Serial;
+  
 import java.io.Serializable;
 import java.util.Comparator;
 
 public class ProductComporators implements Serializable {
-    @Serial
+     
     private static final long serialVersionUID = 15L;
     public static class ProductPriceComparator implements Comparator<Product> {
         @Override

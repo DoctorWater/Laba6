@@ -4,9 +4,11 @@ import common.Command;
 
 import java.io.*;
 import java.net.*;
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
 import java.nio.channels.UnresolvedAddressException;
+import java.nio.channels.UnsupportedAddressTypeException;
 import java.util.Arrays;
 
 public class ServerReceiver {
@@ -18,10 +20,10 @@ public class ServerReceiver {
             datagramChannel.bind(socketAddressChannel);
             datagramChannel.configureBlocking(false);
             while (true) {
-                bb.clear();
+                ((Buffer) bb).clear();
                 SocketAddress from = datagramChannel.receive(bb);
                 if (from != null) {
-                    bb.flip();
+                    ((Buffer) bb).flip();
                     break;
                 }
             }
@@ -32,10 +34,17 @@ public class ServerReceiver {
             datagramChannel.close();
             ois.close();
             bais.close();
-            bb.clear();
-        }catch (UnresolvedAddressException e)
-        {
-            System.out.println("Что-то пошло не так при подключении к клиенту!");
+            ((Buffer) bb).clear();
+        }catch (UnresolvedAddressException| UnsupportedAddressTypeException e){
+            System.out.println("Что-то не так с адресом клиента, пожалуйста, проверьте и перезапустите программу!");
+            System.exit(0);
+        } catch (IOException e) {
+            System.out.println("Ошибка в приеме команды! Проверьте адрес и порт!");
+            System.exit(0);
+        }
+        catch (Exception e){
+            System.out.println("Произошла непредвиденная ошибка! Программа остановлена!");
+            System.exit(-1);
         }
         finally {
             return command;

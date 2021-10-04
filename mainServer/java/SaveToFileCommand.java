@@ -10,7 +10,7 @@ import java.util.Hashtable;
 
 public class
  SaveToFileCommand implements Command, Serializable {
-    @Serial
+     
     private static final long serialVersionUID = 19L;
     private final String filename;
     private Hashtable<String, Product> table;

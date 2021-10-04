@@ -2,13 +2,13 @@ package common;
 
 import mainClient.java.ProductComporators;
 
-import java.io.Serial;
+  
 import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Stream;
 
 public class RemoveSmallerCommand implements Command, Serializable {
-    @Serial
+     
     private static final long serialVersionUID = 18L;
     private Hashtable<String, Product> table;
     private final String key;

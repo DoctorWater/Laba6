@@ -2,13 +2,13 @@ package common;
 
 import mainClient.java.ProductComporators;
 
-import java.io.Serial;
+  
 import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Stream;
 
 public class FilterGreaterUoMCommand implements Command, Serializable {
-    @Serial
+     
     private static final long serialVersionUID = 8L;
     private Hashtable<String, Product> table;
     private final String UoM;

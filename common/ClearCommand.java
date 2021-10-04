@@ -3,12 +3,10 @@ package common;
 import mainClient.java.IllegalVarValue;
 
 import java.io.IOException;
-import java.io.Serial;
 import java.io.Serializable;
 import java.util.Hashtable;
 
 public class ClearCommand implements  Command, Serializable {
-    @Serial
     private static final long serialVersionUID = 27L;
     private Hashtable<String, Product> table = new Hashtable<String, Product>();
 

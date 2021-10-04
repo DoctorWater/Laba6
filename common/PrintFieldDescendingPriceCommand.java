@@ -2,12 +2,12 @@ package common;
 
 import mainClient.java.ProductComporators;
 
-import java.io.Serial;
+  
 import java.io.Serializable;
 import java.util.*;
 
 public class PrintFieldDescendingPriceCommand implements Command, Serializable {
-    @Serial
+     
     private static final long serialVersionUID = 14L;
     private Hashtable<String, Product> table = new Hashtable<String, Product>();
 

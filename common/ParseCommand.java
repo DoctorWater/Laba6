@@ -11,7 +11,7 @@ import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 public class ParseCommand implements Command, Serializable {
-    @Serial
+     
     private static final long serialVersionUID = 12L;
     private final String[] args;
     private final String filename;

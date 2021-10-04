@@ -1,6 +1,6 @@
 package common;
 
-import java.io.Serial;
+  
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 public class CountGreaterPNCommand implements Command, Serializable {
-    @Serial
+     
     private static final long serialVersionUID = 3L;
     private Hashtable<String,Product> productHashtable;
     private final int checker;
